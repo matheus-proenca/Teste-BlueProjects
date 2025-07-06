@@ -66,7 +66,7 @@ namespace TechStoreApi.Controller
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduto(int id, [FromBody] ProdutoPost produto)
         {
-            Produto buscaProduto = _context.Produtos.Where(p => p.ProdutoId == id).First();
+            Produto buscaProduto = _context.Produtos.Where(p => p.ProdutoId == id).FirstOrDefault();
             if (buscaProduto == null)
             {
                 return BadRequest("Não á produto com este id");
@@ -92,7 +92,7 @@ namespace TechStoreApi.Controller
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduto(int id)
         {
-            Produto buscaProduto = _context.Produtos.Where(p => p.ProdutoId == id).First();
+            Produto buscaProduto = _context.Produtos.Where(p => p.ProdutoId == id).FirstOrDefault();
             if (buscaProduto == null)
             {
                 return BadRequest("Não á produto com este id");
