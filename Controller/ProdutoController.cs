@@ -16,10 +16,14 @@ namespace TechStoreApi.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProduto([FromQuery] string nome, [FromQuery] decimal? precoMin,
+        public async Task<IActionResult> GetProduto([FromQuery] string? nome, [FromQuery] decimal? precoMin,
         [FromQuery] decimal? precoMax, [FromQuery] int Pag, [FromQuery] int PagTamanho)
         {
             IQueryable<Produto> query = _context.Produtos.AsQueryable();
+            if (nome == null)
+            {
+                return Ok(query);
+            }
             if (nome != null)
             {
                 query = query.Where(p => p.Nome.Contains(nome));
