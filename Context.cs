@@ -6,6 +6,6 @@ namespace TechStoreApi
     public class Context : DbContext
     {
         public Context(DbContextOptions<Context> options) : base(options) { }
-        public DbSet<Produto> Produto { get; set; } = null!;
+        public DbSet<Produto> Produtos { get; set; } = null!;
     }
 }
