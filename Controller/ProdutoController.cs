@@ -33,7 +33,6 @@ namespace TechStoreApi.Controller
                 query = query.Where(p => p.Preco <= precoMax);
             }
 
-
             int produtosEncontrados = await query.CountAsync();
             List<Produto> produtos = await query.Skip((Pag - 1) * PagTamanho).Take(PagTamanho).ToListAsync();
 
@@ -62,6 +61,32 @@ namespace TechStoreApi.Controller
             await _context.SaveChangesAsync();
 
             return Created();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProduto(int id, [FromBody] ProdutoPost produto)
+        {
+            Produto buscaProduto = _context.Produtos.Where(p => p.ProdutoId == id).First();
+            if (buscaProduto == null)
+            {
+                return BadRequest("Não produto com este id");
+            }
+            if (produto.Nome == null)
+            {
+                return BadRequest("O campo de nome não pode está vazio");
+            }
+            if (produto.Preco <= 0 || produto.Estoque <= 0)
+            {
+                return BadRequest("O preço e estoques deve possuir um valor e não podem ser negativos");
+            }
+            buscaProduto.Nome = produto.Nome;
+            buscaProduto.Descricao = produto.Descricao;
+            buscaProduto.Preco = produto.Preco;
+            buscaProduto.Estoque = produto.Estoque;
+            buscaProduto.DataCadastro = DateTime.Now;
+            _context.SaveChanges();
+
+            return Ok("Produto atualizado com sucesso!");
         }
     }    
 }
