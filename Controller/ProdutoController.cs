@@ -69,7 +69,7 @@ namespace TechStoreApi.Controller
             Produto buscaProduto = _context.Produtos.Where(p => p.ProdutoId == id).First();
             if (buscaProduto == null)
             {
-                return BadRequest("Não produto com este id");
+                return BadRequest("Não á produto com este id");
             }
             if (produto.Nome == null)
             {
@@ -84,9 +84,23 @@ namespace TechStoreApi.Controller
             buscaProduto.Preco = produto.Preco;
             buscaProduto.Estoque = produto.Estoque;
             buscaProduto.DataCadastro = DateTime.Now;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok("Produto atualizado com sucesso!");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduto(int id)
+        {
+            Produto buscaProduto = _context.Produtos.Where(p => p.ProdutoId == id).First();
+            if (buscaProduto == null)
+            {
+                return BadRequest("Não á produto com este id");
+            }
+            _context.Produtos.Remove(buscaProduto);
+            await _context.SaveChangesAsync();
+
+            return Ok("Produto Deletado com sucesso!");
         }
     }    
 }
