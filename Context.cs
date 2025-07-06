@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TechStoreApi.models;
+using TechStoreApi.Dto;
 
 namespace TechStoreApi
 {

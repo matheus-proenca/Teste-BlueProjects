@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TechStoreApi.models;
+using TechStoreApi.Dto;
 
 namespace TechStoreApi.Controller
 {
@@ -38,6 +38,30 @@ namespace TechStoreApi.Controller
             List<Produto> produtos = await query.Skip((Pag - 1) * PagTamanho).Take(PagTamanho).ToListAsync();
 
             return Ok(new { produtosEncontrados, produtos });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostProduto([FromBody] ProdutoPost produto)
+        {
+            if (produto.Nome == null)
+            {
+                return BadRequest("O campo de nome não pode está vazio");
+            }
+            if (produto.Preco <= 0 || produto.Estoque <= 0)
+            {
+                return BadRequest("O preço e estoques deve possuir um valor e não podem ser negativos");
+            }
+            Produto novoProduto = new Produto
+            {
+                Nome = produto.Nome,
+                Descricao = produto.Descricao,
+                Preco = produto.Preco,
+                Estoque = produto.Estoque,
+            };
+            _context.Produtos.Add(novoProduto);
+            await _context.SaveChangesAsync();
+
+            return Created();
         }
     }    
 }
