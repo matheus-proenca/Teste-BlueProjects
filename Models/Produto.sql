@@ -1,4 +1,10 @@
-CREATE DATABASE TechStoreDB;
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'TechStoreDB')
+BEGIN
+    CREATE DATABASE TechStoreDB
+END
+GO
+USE TechStoreDB
+GO
 
 CREATE TABLE Produtos(
     ProdutoId INT IDENTITY(1, 1) PRIMARY KEY,
